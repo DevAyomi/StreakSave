@@ -1,0 +1,16 @@
+/* Base Reset */
+:root {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #000;
+  margin: 0;
+  padding: 0;
+}

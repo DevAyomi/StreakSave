@@ -1,0 +1,18 @@
+# Common
+node_modules/
+.DS_Store
+.env
+*.log
+
+# Frontend
+frontend/dist/
+frontend/dist-ssr/
+frontend/.env.local
+
+# Backend
+backend/.env
+
+# Foundry
+foundry-inj/out/
+foundry-inj/cache/
+foundry-inj/lib/
