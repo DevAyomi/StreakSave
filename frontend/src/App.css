@@ -136,13 +136,20 @@ header {
 
 .logo {
   font-size: 1.75rem;
-  font-weight: 900;
-  background: linear-gradient(to right, var(--primary), var(--secondary));
+  font-weight: 950;
+  background: linear-gradient(135deg, var(--primary) 0%, #ffffff 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  letter-spacing: -0.03em;
-  filter: drop_shadow(0 0 10px hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.2));
+  letter-spacing: -0.04em;
+  filter: drop-shadow(0 0 8px rgba(181, 255, 27, 0.2));
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+.logo:hover {
+  filter: drop-shadow(0 0 12px rgba(181, 255, 27, 0.4));
+  transform: scale(1.02);
 }
 
 /* Typography & Hero */
@@ -511,16 +518,27 @@ input:focus {
   position: sticky;
   top: 1.5rem;
   max-width: 1200px;
-  margin: 0 auto 8rem auto;
-  background: rgba(15, 15, 15, 0.8);
-  backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 0 auto 3rem auto;
+  background: rgba(10, 10, 10, 0.7);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   padding: 0.85rem 2.5rem;
   border-radius: 9999px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   z-index: 2000;
+  box-shadow: 
+    0 15px 35px -5px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(181, 255, 27, 0.03),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+  animation: navReveal 0.8s cubic-bezier(0.2, 0, 0, 1) forwards;
+}
+
+@keyframes navReveal {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .nav-links {
@@ -568,7 +586,7 @@ input:focus {
 .hero-section {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 8rem 2rem;
+  padding: 3rem 2rem 8rem 2rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -706,5 +724,119 @@ input:focus {
 @media (max-width: 1024px) {
   .nav-links {
     display: none !important;
+  }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .app-container {
+    padding: 0.75rem 1rem;
+  }
+
+  header {
+    padding: 0.85rem 1.25rem;
+    margin-bottom: 1.5rem;
+    border-radius: 18px;
+    gap: 1rem;
+  }
+
+  .logo {
+    font-size: 1.25rem;
+  }
+
+  .hero-section {
+    padding: 2rem 1rem 4rem 1rem;
+  }
+
+  .hero-title {
+    font-size: clamp(2.5rem, 10vw, 3.5rem);
+  }
+
+  .hero-description {
+    font-size: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .hero-ctas {
+    flex-direction: column;
+    width: 100%;
+    gap: 1rem;
+  }
+
+  .hero-ctas button, .hero-ctas .btn-secondary {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  .main-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .floating-nav {
+    top: 1rem;
+    padding: 0.5rem 1.25rem;
+    margin: 0 1rem 2rem 1rem;
+    width: auto;
+    left: 0;
+    right: 0;
+    gap: 0.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(181, 255, 27, 0.05);
+  }
+
+  .nav-actions {
+    gap: 0.5rem;
+  }
+
+  .nav-actions .btn-primary {
+    padding: 0.55rem 1.15rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+  }
+
+  .glass-card {
+    padding: 1.25rem;
+    border-radius: 20px;
+  }
+
+  .grid-cols-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .duration-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-content {
+    padding: 1.25rem;
+    border-radius: 20px;
+    width: 95%;
+  }
+
+  input, select {
+    font-size: 16px; /* Prevents auto-zoom on iOS */
+    padding: 0.85rem;
+  }
+
+  .btn-primary, .btn-secondary {
+    padding: 0.85rem 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  .leaderboard-table th {
+    font-size: 0.6rem;
+    padding: 0.4rem;
+  }
+
+  .leaderboard-table tr td {
+    padding: 0.75rem 0.4rem;
+    font-size: 0.75rem;
+  }
+
+  .user-pill {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.8rem;
   }
 }

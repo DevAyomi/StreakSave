@@ -11,7 +11,7 @@ import { STREAKPAY_ADDRESS, STREAKPAY_ABI, USDT_ADDRESS } from './contract';
 import previewImage from './assets/dashboard_preview.png';
 import './App.css';
 
-const API_BASE = "http://localhost:3001/api";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://streaksave-production.up.railway.app/api";
 
 const ErrorMessage = ({ message }) => (
   <motion.div
@@ -346,7 +346,7 @@ function App() {
       const contract = await getContract();
       const count = await contract.userStreakCount(addr);
       const loadedStreaks = [];
-      
+
       for (let i = 0; i < Number(count); i++) {
         const s = await contract.userStreaks(addr, i);
         if (s.isActive || s.weeksCompleted > 0) {
@@ -769,7 +769,7 @@ function App() {
             <nav className="floating-nav">
               <div className="logo">StreakPay</div>
               <div className="nav-actions">
-                <button className="btn-primary" onClick={() => changeAuthStep('ENTER_EMAIL')}>Get started for free</button>
+                <button className="btn-primary" onClick={() => changeAuthStep('ENTER_EMAIL')}>Get Started</button>
               </div>
             </nav>
 
@@ -795,7 +795,7 @@ function App() {
                 </p>
 
                 <div className="hero-ctas">
-                  <button className="btn-primary" onClick={() => changeAuthStep('ENTER_EMAIL')}>Get started for free</button>
+                  <button className="btn-primary" onClick={() => changeAuthStep('ENTER_EMAIL')}>Get Started</button>
                   <button className="btn-secondary">View Leaderboard</button>
                 </div>
               </motion.div>
@@ -917,7 +917,7 @@ function App() {
                           </div>
                           <h3 className="text-xl font-black uppercase tracking-widest mb-1">{s.purpose}</h3>
                           <div className="text-dim text-[10px] uppercase tracking-widest mb-4">Savings Goal</div>
-                          
+
                           <div className="flex justify-between items-end mt-4">
                             <span className="text-5xl font-black text-white tracking-tighter">{s.weeksCompleted}</span>
                             <span className="text-dim font-bold pb-2">/ {s.totalWeeks} Weeks</span>
@@ -1081,80 +1081,80 @@ function App() {
               </div>
 
 
-                <div className="space-y-5">
-                  <p className="text-dim text-sm mb-2">
-                    Transfer funds from your managed StreakPay wallet to your primary address (e.g., MetaMask or Keplr).
-                  </p>
+              <div className="space-y-5">
+                <p className="text-dim text-sm mb-2">
+                  Transfer funds from your managed StreakPay wallet to your primary address (e.g., MetaMask or Keplr).
+                </p>
 
-                  {streaks.some(s => s.isActive) && (
-                    <div className="bg-streak-gold/10 border border-streak-gold/30 p-4 rounded-2xl flex items-start gap-3">
-                      <AlertTriangle size={18} className="text-streak-gold shrink-0 mt-0.5" />
-                      <p className="text-xs text-streak-gold leading-relaxed">
-                        Note: Your locked streak funds are not available for external transfer. Exit a streak to unlock them.
-                      </p>
+                {streaks.some(s => s.isActive) && (
+                  <div className="bg-streak-gold/10 border border-streak-gold/30 p-4 rounded-2xl flex items-start gap-3">
+                    <AlertTriangle size={18} className="text-streak-gold shrink-0 mt-0.5" />
+                    <p className="text-xs text-streak-gold leading-relaxed">
+                      Note: Your locked streak funds are not available for external transfer. Exit a streak to unlock them.
+                    </p>
+                  </div>
+                )}
+
+                <div className="form-group">
+                  <label className="text-xs uppercase tracking-widest text-dim font-bold mb-3 block">Recipient Address</label>
+                  <input
+                    type="text"
+                    className="w-full bg-black/40 border border-white/10 rounded-2xl p-4 text-white focus:border-primary transition-all"
+                    placeholder="inj1... or 0x..."
+                    value={sendRecipient}
+                    onChange={(e) => setSendRecipient(e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label className="text-xs uppercase tracking-widest text-dim font-bold mb-3 block">Asset</label>
+                  <div className="grid grid-cols-2 gap-3">
+                    <button
+                      className={`py-4 rounded-2xl border-2 transition-all font-bold ${sendToken === '0x0000000000000000000000000000000000000000' ? 'bg-primary/15 border-primary shadow-[0_0_20px_var(--primary-glow)] text-white' : 'bg-white/4 border-white/8 text-dim hover:border-white/20'}`}
+                      onClick={() => setSendToken('0x0000000000000000000000000000000000000000')}
+                    >
+                      INJ
+                    </button>
+                    <button
+                      className={`py-4 rounded-2xl border-2 transition-all font-bold ${sendToken !== '0x0000000000000000000000000000000000000000' ? 'bg-primary/15 border-primary shadow-[0_0_20px_var(--primary-glow)] text-white' : 'bg-white/4 border-white/8 text-dim hover:border-white/20'}`}
+                      onClick={() => setSendToken(USDT_ADDRESS)}
+                    >
+                      USDT
+                    </button>
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <div className="flex justify-between items-end mb-3">
+                    <label className="text-xs uppercase tracking-widest text-dim font-bold mb-0 block">Amount</label>
+                    <div className="text-[10px] text-primary font-bold bg-primary/10 px-2 py-1 rounded-md">
+                      Max: {sendToken === '0x0000000000000000000000000000000000000000' ? balances.inj : balances.usdt}
                     </div>
-                  )}
-
-                  <div className="form-group">
-                    <label className="text-xs uppercase tracking-widest text-dim font-bold mb-3 block">Recipient Address</label>
+                  </div>
+                  <div className="relative">
                     <input
-                      type="text"
-                      className="w-full bg-black/40 border border-white/10 rounded-2xl p-4 text-white focus:border-primary transition-all"
-                      placeholder="inj1... or 0x..."
-                      value={sendRecipient}
-                      onChange={(e) => setSendRecipient(e.target.value)}
+                      type="number"
+                      className="w-full bg-black/40 border border-white/10 rounded-2xl p-4 text-white focus:border-primary transition-all pr-16"
+                      placeholder="0.00"
+                      value={sendAmount}
+                      onChange={(e) => setSendAmount(e.target.value)}
                       required
                     />
+                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-bold text-primary">
+                      {sendToken === '0x0000000000000000000000000000000000000000' ? 'INJ' : 'USDT'}
+                    </span>
                   </div>
-
-                  <div className="form-group">
-                    <label className="text-xs uppercase tracking-widest text-dim font-bold mb-3 block">Asset</label>
-                    <div className="grid grid-cols-2 gap-3">
-                      <button
-                        className={`py-4 rounded-2xl border-2 transition-all font-bold ${sendToken === '0x0000000000000000000000000000000000000000' ? 'bg-primary/15 border-primary shadow-[0_0_20px_var(--primary-glow)] text-white' : 'bg-white/4 border-white/8 text-dim hover:border-white/20'}`}
-                        onClick={() => setSendToken('0x0000000000000000000000000000000000000000')}
-                      >
-                        INJ
-                      </button>
-                      <button
-                        className={`py-4 rounded-2xl border-2 transition-all font-bold ${sendToken !== '0x0000000000000000000000000000000000000000' ? 'bg-primary/15 border-primary shadow-[0_0_20px_var(--primary-glow)] text-white' : 'bg-white/4 border-white/8 text-dim hover:border-white/20'}`}
-                        onClick={() => setSendToken(USDT_ADDRESS)}
-                      >
-                        USDT
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="form-group">
-                    <div className="flex justify-between items-end mb-3">
-                      <label className="text-xs uppercase tracking-widest text-dim font-bold mb-0 block">Amount</label>
-                      <div className="text-[10px] text-primary font-bold bg-primary/10 px-2 py-1 rounded-md">
-                        Max: {sendToken === '0x0000000000000000000000000000000000000000' ? balances.inj : balances.usdt}
-                      </div>
-                    </div>
-                    <div className="relative">
-                      <input
-                        type="number"
-                        className="w-full bg-black/40 border border-white/10 rounded-2xl p-4 text-white focus:border-primary transition-all pr-16"
-                        placeholder="0.00"
-                        value={sendAmount}
-                        onChange={(e) => setSendAmount(e.target.value)}
-                        required
-                      />
-                      <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-bold text-primary">
-                        {sendToken === '0x0000000000000000000000000000000000000000' ? 'INJ' : 'USDT'}
-                      </span>
-                    </div>
-                  </div>
-
-                  <button
-                    className="btn-primary w-full py-4 text-base font-bold flex items-center justify-center gap-2 mt-2"
-                    onClick={handleSendFunds}
-                    disabled={loading || !sendRecipient || !sendAmount}
-                  >
-                    {loading ? "Processing..." : "Confirm Withdrawal"}
-                  </button>
                 </div>
+
+                <button
+                  className="btn-primary w-full py-4 text-base font-bold flex items-center justify-center gap-2 mt-2"
+                  onClick={handleSendFunds}
+                  disabled={loading || !sendRecipient || !sendAmount}
+                >
+                  {loading ? "Processing..." : "Confirm Withdrawal"}
+                </button>
+              </div>
             </motion.div>
           </motion.div>
         )}
