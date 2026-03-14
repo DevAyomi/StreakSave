@@ -822,7 +822,7 @@ function App() {
                   className="glass-card mb-6 border-primary/20 bg-primary/5 hover:bg-primary/[0.08]"
                 >
                   <div className="flex flex-col md:flex-row items-center gap-8 managed-wallet-card-container">
-                    <div className="bg-white p-3 rounded-2xl shrink-0 shadow-2xl">
+                    <div className="bg-white p-3 rounded-2xl shrink-0 shadow-2xl qr-container">
                       <QRCodeSVG value={user.deposit_address} size={140} />
                     </div>
                     <div className="flex-1 w-full">
@@ -860,7 +860,7 @@ function App() {
                         </div>
                       </div>
 
-                      <div className="flex gap-3 mb-4">
+                      <div className="flex gap-3 mb-4 wallet-actions">
                         <motion.button
                           whileHover={{ scale: 1.02 }}
                           whileTap={{ scale: 0.98 }}

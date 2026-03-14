@@ -857,14 +857,43 @@ input:focus {
 
   .managed-wallet-card-container {
     flex-direction: column !important;
-    align-items: flex-start !important;
+    align-items: center !important; /* Centering for better feel */
+    text-align: center;
     gap: 1.5rem !important;
   }
 
+  .qr-container {
+    padding: 0.75rem !important;
+    width: fit-content;
+    margin: 0 auto;
+  }
+
+  .qr-container svg {
+    width: 100px !important;
+    height: 100px !important;
+  }
+
   .balance-pills {
-    justify-content: flex-start !important;
+    justify-content: center !important;
     width: 100%;
     margin-top: 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem !important;
+  }
+
+  .balance-pills div {
+    padding: 0.4rem 0.85rem !important;
+    font-size: 0.7rem !important;
+  }
+
+  .wallet-actions {
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+  }
+
+  .wallet-actions button {
+    width: 100% !important;
+    padding: 0.85rem !important;
   }
 
   .streak-card-stats {
@@ -878,10 +907,28 @@ input:focus {
   }
 
   .address-box {
-    padding: 0.75rem !important;
+    padding: 0.6rem 0.85rem !important;
+    width: 100%;
+    justify-content: space-between;
   }
 
   .address-box code {
-    font-size: 10px !important;
+    font-size: 9px !important;
+    word-break: break-all;
+    max-width: 80%;
+  }
+
+  .streak-card .text-5xl {
+    font-size: 2.5rem !important;
+  }
+
+  .streak-card .text-xl {
+    font-size: 1.15rem !important;
+  }
+
+  .streak-badge {
+    top: 1rem !important;
+    right: 1rem !important;
+    padding: 0.5rem !important;
   }
 }
