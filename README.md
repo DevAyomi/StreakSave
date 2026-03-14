@@ -25,9 +25,10 @@ StreakPay allows users to create **Saving Plans** with specific purposes (e.g., 
 
 ### 1. Smart Contract (`StreakPay.sol`)
 The core logic resides in a Solidity contract deployed on the **Injective Testnet**.
-- **Address**: `0x9feA9ab28B7D5902958dDf2d4e40A78FFdC00577`
+- **Address**: `0x98eAfA1BAc655cf377E0cE93be982343880b7DBC`
 - Manages locked principal, streak timestamps, and rewards.
 - Supports concurrent streaks per user.
+- **Verified on Blockscout**: [View Contract](https://testnet.blockscout.injective.network/address/0x98eafa1bac655cf377e0ce93be982343880b7dbc)
 
 ### 2. Managed Wallet System (The Relayer)
 To solve the UX problem of "signing every week," we implemented a secure relayer:
@@ -35,10 +36,12 @@ To solve the UX problem of "signing every week," we implemented a secure relayer
 - A managed wallet is generated for them.
 - Keys are encrypted and stored, allowing our backend relayer to trigger `deposit()` calls on their behalf at the exact time their "Savings Window" opens.
 
-### 3. Backend & Event Syncing
+### 3. Backend & Event Syncing (Modular Architecture)
+- **Modular Design**: Split into `controllers`, `routes`, `services`, and `config`.
 - **Node.js/Express**: Handles auth, wallet management, and API for the leaderboard.
 - **PostgreSQL**: Stores transaction history and streak metadata.
-- **Event Polling**: A background worker polls the Injective blockchain for `WeeklyDepositMade` and `FundsWithdrawn` events to keep the database and leaderboard in sync.
+- **Event Sync Service**: A professional background service polls the Injective blockchain for `WeeklyDepositMade`, `StreakStarted`, and `FundsWithdrawn` events.
+- **Relayer Monitor**: Automatically funds managed wallets with gas when they run low.
 
 ---
 
@@ -52,12 +55,13 @@ To solve the UX problem of "signing every week," we implemented a secure relayer
 1. `cd backend`
 2. `npm install`
 3. Configure `.env` with your `RELAYER_PRIVATE_KEY` and `DATABASE_URL`.
-4. `node index.js`
+4. `npm start` (Runs `node src/index.js`)
 
 ### Frontend Setup
 1. `cd frontend`
 2. `npm install`
-3. `npm run dev`
+3. Configure `frontend/.env` with `VITE_API_BASE_URL`.
+4. `npm run dev`
 
 ---
 
