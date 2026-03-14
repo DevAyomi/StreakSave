@@ -730,7 +730,7 @@ input:focus {
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
   .app-container {
-    padding: 0.75rem 1rem;
+    padding: 1rem 1.25rem;
   }
 
   header {
@@ -777,7 +777,7 @@ input:focus {
   .floating-nav {
     top: 1rem;
     padding: 0.5rem 1.25rem;
-    margin: 0 1rem 2rem 1rem;
+    margin: 0 1.25rem 2rem 1.25rem;
     width: auto;
     left: 0;
     right: 0;
@@ -797,8 +797,10 @@ input:focus {
   }
 
   .glass-card {
-    padding: 1.25rem;
+    padding: 1.5rem;
     border-radius: 20px;
+    margin-left: 0;
+    margin-right: 0;
   }
 
   .grid-cols-2 {
@@ -810,9 +812,10 @@ input:focus {
   }
 
   .modal-content {
-    padding: 1.25rem;
+    padding: 1.5rem;
     border-radius: 20px;
-    width: 95%;
+    width: calc(100% - 2.5rem);
+    margin: 1.25rem;
   }
 
   input, select {
@@ -936,7 +939,7 @@ input:focus {
 /* Ultra-Mobile Optimization */
 @media (max-width: 480px) {
   .app-container {
-    padding: 0.5rem;
+    padding: 0.75rem 1rem;
   }
 
   .hero {
@@ -1003,7 +1006,8 @@ input:focus {
   }
 
   .modal-content {
-    padding: 1rem;
+    padding: 1.25rem;
     margin: 1rem;
+    width: calc(100% - 2rem);
   }
 }
