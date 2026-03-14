@@ -11,7 +11,7 @@ import { STREAKPAY_ADDRESS, STREAKPAY_ABI, USDT_ADDRESS } from './contract';
 import previewImage from './assets/dashboard_preview.png';
 import './App.css';
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://streaksave-production.up.railway.app/api";
+const API_BASE = (import.meta.env.VITE_API_BASE_URL || "https://streaksave-production.up.railway.app/api").replace('http://', 'https://');
 
 const ErrorMessage = ({ message }) => (
   <motion.div
