@@ -92,6 +92,11 @@ function App() {
     }
   };
 
+  const truncateAddress = (addr) => {
+    if (!addr || addr.length < 12) return addr;
+    return `${addr.slice(0, 10)}...${addr.slice(-8)}`;
+  };
+
   const fetchBalances = async (addr) => {
     try {
       const res = await fetch(`${API_BASE}/wallet/balance/${addr}`);
@@ -387,23 +392,40 @@ function App() {
     return () => clearInterval(statsInterval);
   }, [user]);
 
-  const copyToClipboard = (text, label) => {
-    navigator.clipboard.writeText(text);
-    showNotification('success', `${label} copied to clipboard!`);
+  const copyAddress = (text, label) => {
+    if (!text) return;
+    try {
+      const el = document.createElement('textarea');
+      el.value = text;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+      showNotification('success', `${label} copied to clipboard!`);
+    } catch (err) {
+      // Fallback to navigator.clipboard
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text)
+          .then(() => showNotification('success', `${label} copied to clipboard!`))
+          .catch(() => showNotification('error', "Failed to copy address"));
+      } else {
+        showNotification('error', "Failed to copy address");
+      }
+    }
   };
 
   return (
-    <div className={authStep === 'LANDING' ? '' : 'app-container'}>
+    <div className={authStep === 'LANDING' ? '' : 'app-container dashboard-active'}>
       {authStep !== 'LANDING' && (
-        <header>
+        <header className="main-header">
           <div className="logo">StreakPay</div>
           {user ? (
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 sm:gap-4 user-actions">
               <div className="user-pill">
                 <div className="w-2 h-2 rounded-full bg-primary animate-pulse shadow-[0_0_8px_var(--primary-glow)]" />
-                <span className="text-white text-sm font-bold">@{user.username}</span>
+                <span className="text-white text-sm font-bold truncate-header-user">@{user.username}</span>
               </div>
-              <button onClick={logout} className="p-2 text-dim hover:text-primary transition-colors hover:bg-white/5 rounded-xl">
+              <button onClick={logout} className="p-2 text-dim hover:text-primary transition-colors hover:bg-white/5 rounded-xl logout-btn">
                 <LogOut size={20} />
               </button>
             </div>
@@ -821,12 +843,12 @@ function App() {
                   animate={{ opacity: 1, x: 0 }}
                   className="glass-card mb-6 border-primary/20 bg-primary/5 hover:bg-primary/[0.08]"
                 >
-                  <div className="flex flex-col md:flex-row items-center gap-8 managed-wallet-card-container">
+                  <div className="flex items-center gap-8 managed-wallet-card-container">
                     <div className="bg-white p-3 rounded-2xl shrink-0 shadow-2xl qr-container">
                       <QRCodeSVG value={user.deposit_address} size={140} />
                     </div>
-                    <div className="flex-1 w-full">
-                      <div className="flex justify-between items-start mb-6">
+                    <div className="flex-1 w-full managed-wallet-info">
+                      <div className="flex justify-between items-start mb-6 wallet-header">
                         <h4 className="text-sm text-dim uppercase tracking-wider">Your Managed Wallet</h4>
                         <div className="flex gap-2 balance-pills">
                           <div className="bg-white/5 px-4 py-1.5 rounded-full border border-white/10 flex items-center gap-2 transition-all hover:bg-white/10">
@@ -843,8 +865,9 @@ function App() {
                       <div className="mb-5">
                         <span className="text-[10px] text-primary uppercase font-black tracking-widest block mb-1 opacity-70">Injective Native</span>
                         <div className="flex items-center gap-3 bg-black/40 p-4 rounded-2xl border border-white/5 hover:border-white/10 transition-all group address-box">
-                          <code className="text-xs break-all flex-1 text-primary font-mono opacity-80 group-hover:opacity-100">{ethToInj(user.deposit_address)}</code>
-                          <button onClick={() => copyAddress(ethToInj(user.deposit_address), "Native address")} className="text-dim hover:text-primary transition-colors">
+                          <code className="text-xs break-all flex-1 text-primary font-mono opacity-80 group-hover:opacity-100 mobile-truncate">{truncateAddress(ethToInj(user.deposit_address))}</code>
+                          <code className="hidden-address">{ethToInj(user.deposit_address)}</code>
+                          <button onClick={() => copyAddress(ethToInj(user.deposit_address), "Native address")} className="copy-btn text-dim hover:text-primary transition-colors">
                             <Copy size={16} />
                           </button>
                         </div>
@@ -853,8 +876,9 @@ function App() {
                       <div className="mb-6">
                         <span className="text-[10px] text-dim uppercase font-black tracking-widest block mb-1 opacity-70">EVM Format</span>
                         <div className="flex items-center gap-3 bg-white/5 p-3 rounded-xl border border-white/5 hover:border-white/10 transition-all group address-box">
-                          <code className="text-[10px] break-all flex-1 text-dim font-mono">{user.deposit_address}</code>
-                          <button onClick={() => copyAddress(user.deposit_address, "EVM address")} className="text-dim hover:text-white transition-colors">
+                          <code className="text-[10px] break-all flex-1 text-dim font-mono mobile-truncate">{truncateAddress(user.deposit_address)}</code>
+                          <code className="hidden-address">{user.deposit_address}</code>
+                          <button onClick={() => copyAddress(user.deposit_address, "EVM address")} className="copy-btn text-dim hover:text-white transition-colors">
                             <Copy size={14} />
                           </button>
                         </div>
@@ -1015,11 +1039,11 @@ function App() {
                     <tbody>
                       {leaderboard.map((item, idx) => (
                         <tr key={idx} className={item.username === user.username ? 'bg-primary/10' : ''}>
-                          <td className="text-primary font-bold">#{idx + 1}</td>
-                          <td>@{item.username || 'anonymous'}</td>
-                          <td className="max-w-[120px] truncate opacity-80">{item.goal_description}</td>
-                          <td>🔥 {item.weeks || 0}</td>
-                          <td>{Number(item.total_savings).toLocaleString()} <span className="text-[10px] text-dim">{item.token_symbol}</span></td>
+                          <td data-label="Rank" className="text-primary font-bold">#{idx + 1}</td>
+                          <td data-label="User">@{item.username || 'anonymous'}</td>
+                          <td data-label="Plan" className="max-w-[120px] truncate opacity-80">{item.goal_description}</td>
+                          <td data-label="Weeks">🔥 {item.weeks || 0}</td>
+                          <td data-label="Savings">{Number(item.total_savings).toLocaleString()} <span className="text-[10px] text-dim">{item.token_symbol}</span></td>
                         </tr>
                       ))}
                       {leaderboard.length === 0 && (
