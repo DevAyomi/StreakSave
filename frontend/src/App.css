@@ -932,3 +932,78 @@ input:focus {
     padding: 0.5rem !important;
   }
 }
+
+/* Ultra-Mobile Optimization */
+@media (max-width: 480px) {
+  .app-container {
+    padding: 0.5rem;
+  }
+
+  .hero {
+    padding: 2.5rem 1rem 1rem 1rem !important;
+  }
+
+  .hero h1 {
+    font-size: 1.75rem !important;
+    line-height: 1.1;
+  }
+
+  .hero p {
+    font-size: 0.85rem !important;
+  }
+
+  .glass-card {
+    padding: 1rem !important;
+    border-radius: 16px;
+  }
+
+  .logo {
+    font-size: 1.15rem !important;
+  }
+
+  .nav-actions .btn-primary {
+    padding: 0.45rem 0.85rem !important;
+    font-size: 0.7rem !important;
+  }
+
+  .managed-wallet-card-container {
+    gap: 1rem !important;
+  }
+
+  .qr-container svg {
+    width: 80px !important;
+    height: 80px !important;
+  }
+
+  .balance-pills div {
+    padding: 0.35rem 0.65rem !important;
+    font-size: 0.65rem !important;
+  }
+
+  .address-box code {
+    font-size: 8px !important;
+  }
+
+  .streak-card .text-5xl {
+    font-size: 2.25rem !important;
+  }
+
+  .streak-card h3 {
+    font-size: 0.9rem !important;
+  }
+
+  .leaderboard-container {
+    overflow-x: auto;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .leaderboard-table {
+    min-width: 400px; /* Force scroll on very narrow screens */
+  }
+
+  .modal-content {
+    padding: 1rem;
+    margin: 1rem;
+  }
+}
