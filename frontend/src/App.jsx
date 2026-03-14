@@ -806,10 +806,7 @@ function App() {
                   Built on Injective
                 </div>
                 <h1 className="hero-title">
-                  NO <span className="highlight-box">COMPLEXITY</span> <br />
-                  JUST SECURE <span className="text-primary">SAVINGS</span><br />
-                  <span className="text-primary">GATEWAY</span> FOR<br />
-                  WEB3
+                  NO <span className="highlight-box">COMPLEXITY</span> JUST SECURE <span className="text-primary">SAVINGS</span> <span className="text-primary">GATEWAY</span> FOR WEB3
                 </h1>
 
                 <p className="hero-description">
