@@ -821,14 +821,14 @@ function App() {
                   animate={{ opacity: 1, x: 0 }}
                   className="glass-card mb-6 border-primary/20 bg-primary/5 hover:bg-primary/[0.08]"
                 >
-                  <div className="flex flex-col sm:flex-row items-center gap-8">
+                  <div className="flex flex-col md:flex-row items-center gap-8 managed-wallet-card-container">
                     <div className="bg-white p-3 rounded-2xl shrink-0 shadow-2xl">
                       <QRCodeSVG value={user.deposit_address} size={140} />
                     </div>
                     <div className="flex-1 w-full">
                       <div className="flex justify-between items-start mb-6">
                         <h4 className="text-sm text-dim uppercase tracking-wider">Your Managed Wallet</h4>
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 balance-pills">
                           <div className="bg-white/5 px-4 py-1.5 rounded-full border border-white/10 flex items-center gap-2 transition-all hover:bg-white/10">
                             <span className="text-[10px] text-dim font-black tracking-widest uppercase">INJ</span>
                             <span className="text-sm font-black text-white">{Number(balances.inj).toFixed(4)}</span>
@@ -842,7 +842,7 @@ function App() {
 
                       <div className="mb-5">
                         <span className="text-[10px] text-primary uppercase font-black tracking-widest block mb-1 opacity-70">Injective Native</span>
-                        <div className="flex items-center gap-3 bg-black/40 p-4 rounded-2xl border border-white/5 hover:border-white/10 transition-all group">
+                        <div className="flex items-center gap-3 bg-black/40 p-4 rounded-2xl border border-white/5 hover:border-white/10 transition-all group address-box">
                           <code className="text-xs break-all flex-1 text-primary font-mono opacity-80 group-hover:opacity-100">{ethToInj(user.deposit_address)}</code>
                           <button onClick={() => copyAddress(ethToInj(user.deposit_address), "Native address")} className="text-dim hover:text-primary transition-colors">
                             <Copy size={16} />
@@ -852,7 +852,7 @@ function App() {
 
                       <div className="mb-6">
                         <span className="text-[10px] text-dim uppercase font-black tracking-widest block mb-1 opacity-70">EVM Format</span>
-                        <div className="flex items-center gap-3 bg-white/5 p-3 rounded-xl border border-white/5 hover:border-white/10 transition-all group">
+                        <div className="flex items-center gap-3 bg-white/5 p-3 rounded-xl border border-white/5 hover:border-white/10 transition-all group address-box">
                           <code className="text-[10px] break-all flex-1 text-dim font-mono">{user.deposit_address}</code>
                           <button onClick={() => copyAddress(user.deposit_address, "EVM address")} className="text-dim hover:text-white transition-colors">
                             <Copy size={14} />
@@ -931,7 +931,7 @@ function App() {
                             />
                           </div>
 
-                          <div className="grid grid-cols-2 gap-4 mt-8">
+                          <div className="grid grid-cols-2 gap-4 mt-8 streak-card-stats">
                             <div className="bg-white/5 p-4 rounded-3xl border border-white/5">
                               <span className="text-[10px] text-dim uppercase font-black tracking-widest block mb-2">Weekly Goal</span>
                               <span className="text-xl font-black text-white">{s.weeklyAmount} <span className="text-xs text-dim">{s.symbol}</span></span>
@@ -986,7 +986,7 @@ function App() {
                     <div className="bg-primary/20 px-3 py-1 rounded-full text-[10px] font-bold text-primary">LIVE</div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4 mb-8">
+                  <div className="grid grid-cols-2 gap-4 mb-8 global-stats-grid">
                     <div className="glass-card p-4 border-white/5">
                       <span className="text-dim text-[10px] uppercase block mb-1">INJ Saved</span>
                       <span className="text-xl font-bold">{Number(globalStats.inj_tvl).toFixed(2)} <span className="text-xs text-dim">INJ</span></span>
