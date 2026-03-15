@@ -54,9 +54,9 @@ html {
 }
 
 .app-container {
-  max-width: 1280px;
+  max-width: 1600px;
   margin: 0 auto;
-  padding: 1.5rem;
+  padding: 1.5rem 1rem;
   width: 100%;
   box-sizing: border-box;
 }
