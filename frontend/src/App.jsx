@@ -8,7 +8,7 @@ import {
 import { bech32 } from 'bech32';
 import { QRCodeSVG } from 'qrcode.react';
 import { STREAKPAY_ADDRESS, STREAKPAY_ABI, USDT_ADDRESS } from './contract';
-import previewImage from './assets/dashboard_preview.png';
+import logo from './assets/logo.png';
 import './App.css';
 
 const API_BASE = (import.meta.env.VITE_API_BASE_URL || "https://streaksave-production.up.railway.app/api").replace('http://', 'https://');
@@ -418,7 +418,10 @@ function App() {
     <div className={authStep === 'LANDING' ? '' : 'app-container dashboard-active'}>
       {authStep !== 'LANDING' && (
         <header className="main-header">
-          <div className="logo">StreakPay</div>
+          <div className="logo flex items-center gap-2">
+            <img src={logo} alt="StreakPay Logo" className="w-8 h-8 rounded-lg" />
+            <span>StreakPay</span>
+          </div>
           {user ? (
             <div className="flex items-center gap-2 sm:gap-4 user-actions">
               <div className="user-pill">
@@ -789,7 +792,10 @@ function App() {
         {authStep === 'LANDING' || !user ? (
           <div className="landing-page">
             <nav className="floating-nav">
-              <div className="logo">StreakPay</div>
+              <div className="logo flex items-center gap-2">
+                <img src={logo} alt="StreakPay Logo" className="w-8 h-8 rounded-lg" />
+                <span>StreakPay</span>
+              </div>
               <div className="nav-actions">
                 <button className="btn-primary" onClick={() => changeAuthStep('ENTER_EMAIL')}>Get Started</button>
               </div>

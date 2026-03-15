@@ -54,9 +54,9 @@ html {
 }
 
 .app-container {
-  max-width: 1300px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 1.5rem 2rem;
+  padding: 1.5rem 2.5rem;
 }
 
 .auth-overlay {
@@ -152,6 +152,15 @@ header {
   filter: drop-shadow(0 0 8px rgba(181, 255, 27, 0.2));
   transition: all 0.3s ease;
   cursor: default;
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 5px var(--primary-glow));
 }
 
 .logo:hover {
@@ -186,8 +195,8 @@ header {
 /* Main Dashboard Grid */
 .main-grid {
   display: grid;
-  grid-template-columns: 1.6fr 1.1fr;
-  gap: 2rem;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 2.5rem;
   align-items: start;
 }
 
@@ -198,7 +207,7 @@ header {
   -webkit-backdrop-filter: blur(40px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 28px;
-  padding: 2.25rem;
+  padding: 2rem;
   transition: all 0.4s cubic-bezier(0.2, 0, 0, 1);
   box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
 }
