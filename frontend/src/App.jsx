@@ -1043,7 +1043,7 @@ function App() {
                       {leaderboard.map((item, idx) => (
                         <tr key={idx} className={item.username === user.username ? 'bg-primary/10' : ''}>
                           <td data-label="Rank" className="text-primary font-bold">#{idx + 1}</td>
-                          <td data-label="User">@{item.username || 'anonymous'}</td>
+                          <td data-label="User"><span className="user-email-cell">@{item.username || 'anonymous'}</span></td>
                           <td data-label="Plan" className="max-w-[120px] truncate opacity-80">{item.goal_description}</td>
                           <td data-label="Weeks">🔥 {item.weeks || 0}</td>
                           <td data-label="Savings">{Number(item.total_savings).toLocaleString()} <span className="text-[10px] text-dim">{item.token_symbol}</span></td>

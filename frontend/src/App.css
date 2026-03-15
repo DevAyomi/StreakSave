@@ -371,6 +371,21 @@ input:focus {
   font-weight: 800;
 }
 
+.user-email-cell {
+  display: inline-block;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .leaderboard-table tr td {
   padding: 1.25rem 1rem;
   background: rgba(255,255,255,0.02);
