@@ -54,9 +54,9 @@ html {
 }
 
 .app-container {
-  max-width: 1200px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 1.5rem 3rem;
+  padding: 1.5rem;
   width: 100%;
   box-sizing: border-box;
 }
@@ -200,6 +200,7 @@ header {
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
   align-items: start;
+  width: 100%;
 }
 
 /* Premium Cards */
