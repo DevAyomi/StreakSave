@@ -2,12 +2,16 @@
 
 -- Users table for off-chain profiles
 CREATE TABLE IF NOT EXISTS users (
-    wallet_address TEXT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
+    email VARCHAR UNIQUE,
+    wallet_address TEXT UNIQUE,
     username TEXT,
     bio TEXT,
     profile_image TEXT,
     deposit_address TEXT UNIQUE,
     encrypted_private_key TEXT,
+    otp VARCHAR,
+    otp_expires_at TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

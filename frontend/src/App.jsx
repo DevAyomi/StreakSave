@@ -11,7 +11,7 @@ import { STREAKPAY_ADDRESS, STREAKPAY_ABI, USDT_ADDRESS } from './contract';
 import logo from './assets/logo.png';
 import './App.css';
 
-const API_BASE = (import.meta.env.VITE_API_BASE_URL || "https://streaksave-production.up.railway.app/api").replace('http://', 'https://');
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:3001/api";
 
 const ErrorMessage = ({ message }) => (
   <motion.div
@@ -271,6 +271,7 @@ function App() {
     setLoading(true);
     setAuthError('');
     try {
+      console.log("Verifying OTP for:", emailInput, "with code:", otpInput);
       const data = await apiFetch('/auth/verify-otp', {
         method: 'POST',
         body: JSON.stringify({ email: emailInput, otp: otpInput })
@@ -696,6 +697,9 @@ function App() {
               </div>
               <h2 className="text-2xl font-black text-white">Verify Identity</h2>
               <p className="text-dim text-sm mt-1">Enter the 6-digit code sent to your inbox.</p>
+              <div className="mt-4 p-3 bg-primary/10 border border-primary/20 rounded-xl">
+                <p className="text-primary text-xs font-bold">🚀 DEMO MODE: Use code <span className="text-white text-sm">000000</span> to login</p>
+              </div>
             </div>
 
             <AnimatePresence mode="wait">

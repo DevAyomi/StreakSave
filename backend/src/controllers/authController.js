@@ -1,6 +1,7 @@
 const pool = require('../config/db');
 const { encrypt } = require('../utils/encryption');
 const { ethers } = require('ethers');
+const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const { Resend } = require('resend');
 const { JWT_SECRET } = require('../middleware/auth');
@@ -17,6 +18,7 @@ exports.requestOTP = async (req, res) => {
     const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
 
     try {
+        console.log(`Bypassing Resend: Generating demo OTP for ${email}`);
         await pool.query(
             `INSERT INTO users (email, otp, otp_expires_at) 
              VALUES ($1, $2, $3) 
@@ -25,21 +27,17 @@ exports.requestOTP = async (req, res) => {
             [email, otp, expiresAt]
         );
 
-        await resend.emails.send({
-            from: 'StreakPay Auth <onboarding@resend.dev>',
-            to: email,
-            subject: 'Your StreakPay Login Code',
-            html: `<p>Your secret login code is: <strong>${otp}</strong></p><p>It will expire in 5 minutes.</p>`
-        });
-
-        res.json({ message: "OTP sent successfully" });
+        console.log("Demo OTP session initiated for", email);
+        res.json({ message: "OTP session initiated. Use code 000000 to login." });
     } catch (err) {
         console.error("OTP Error:", err);
-        res.status(500).json({ error: "Failed to send OTP" });
+        res.status(500).json({ error: "Failed to initiate login session", detail: err.message });
     }
 };
 
 exports.verifyOTP = async (req, res) => {
+    console.log("Verify OTP Request Headers:", req.headers);
+    console.log("Verify OTP Request Body:", req.body);
     let { email, otp } = req.body;
     if (!email || !otp) return res.status(400).json({ error: "Email and OTP required" });
     email = email.trim().toLowerCase();
@@ -48,8 +46,18 @@ exports.verifyOTP = async (req, res) => {
         const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
         const user = result.rows[0];
 
-        if (!user || user.otp !== otp || new Date() > new Date(user.otp_expires_at)) {
+        // Demo OTP check
+        const isDemoOTP = otp === '000000';
+        const isValidStoredOTP = user && user.otp === otp && new Date() <= new Date(user.otp_expires_at);
+
+        if (!isDemoOTP && !isValidStoredOTP) {
             return res.status(401).json({ error: "Invalid or expired OTP" });
+        }
+
+        // If it's a new user and they used the demo OTP, we might not have a record yet or it might be incomplete.
+        // But requestOTP should have already created the record.
+        if (!user) {
+            return res.status(404).json({ error: "User not found. Please request an OTP first." });
         }
 
         await pool.query('UPDATE users SET otp = NULL, otp_expires_at = NULL WHERE email = $1', [email]);
